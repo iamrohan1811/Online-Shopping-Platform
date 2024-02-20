@@ -1,0 +1,153 @@
+syntax = "proto3";
+
+// Notification service definition
+service Notification {
+  // RPC method for sending notifications to clients
+  rpc NotifyClient (NotifyClientRequest) returns (NotifyClientResponse);
+}
+
+// Request message for sending notifications
+message NotifyClientRequest {
+  string notification_message = 1; // The notification message to be sent
+}
+
+// Response message for sending notifications
+message NotifyClientResponse {
+  string message = 1; // Confirmation message indicating if the notification was sent successfully
+}
+
+// Request message for registering a seller
+message RegisterSellerRequest {
+  string address = 1; // Address of the seller's notification server
+  string uuid = 2; // Unique identifier for the seller
+}
+
+// Response message for registering a seller
+message RegisterSellerResponse {
+  string message = 1; // Confirmation message indicating if the registration was successful
+}
+
+// Request message for selling an item
+message SellItemRequest {
+  string product_name = 1; // Name of the product
+  string category = 2; // Category of the product
+  int32 quantity = 3; // Quantity of the product
+  string description = 4; // Description of the product
+  string seller_address = 5; // Address of the seller's notification server
+  string seller_uuid = 6; // Unique identifier for the seller
+  float price_per_unit = 7; // Price per unit of the product
+}
+
+// Response message for selling an item
+message SellItemResponse {
+  string message = 1; // Confirmation message indicating if the item was successfully added for sale
+}
+
+// Request message for updating an item
+message UpdateItemRequest {
+  string item_id = 1; // ID of the item to be updated
+  float price_per_unit = 2; // New price per unit of the item
+  int32 quantity = 3; // New quantity of the item
+  string seller_address = 4; // Address of the seller's notification server
+  string seller_uuid = 5; // Unique identifier for the seller
+}
+
+// Response message for updating an item
+message UpdateItemResponse {
+  string message = 1; // Confirmation message indicating if the item was successfully updated
+}
+
+// Request message for deleting an item
+message DeleteItemRequest {
+  string item_id = 1; // ID of the item to be deleted
+  string seller_address = 2; // Address of the seller's notification server
+  string seller_uuid = 3; // Unique identifier for the seller
+}
+
+// Response message for deleting an item
+message DeleteItemResponse {
+  string message = 1; // Confirmation message indicating if the item was successfully deleted
+}
+
+// Request message for displaying seller's items
+message DisplaySellerItemsRequest {
+  string seller_address = 1; // Address of the seller's notification server
+  string seller_uuid = 2; // Unique identifier for the seller
+}
+
+// Response message for displaying seller's items
+message DisplaySellerItemsResponse {
+  repeated ItemDetails items = 1; // List of items owned by the seller
+}
+
+// Request message for searching items
+message SearchItemRequest {
+  string item_name = 1; // Name of the item to search for
+  string category = 2; // Category of the item to search for
+}
+
+// Response message for searching items
+message SearchItemResponse {
+  repeated ItemDetails items = 1; // List of items matching the search criteria
+}
+
+// Request message for buying an item
+message BuyItemRequest {
+  string item_id = 1; // ID of the item to buy
+  int32 quantity = 2; // Quantity of the item to buy
+  string buyer_address = 3; // Address of the buyer's notification server
+}
+
+// Response message for buying an item
+message BuyItemResponse {
+  string message = 1; // Confirmation message indicating if the purchase was successful
+}
+
+// Request message for adding an item to wishlist
+message AddToWishListRequest {
+  string item_id = 1; // ID of the item to add to wishlist
+  string buyer_address = 2; // Address of the buyer's notification server
+}
+
+// Response message for adding an item to wishlist
+message AddToWishListResponse {
+  string message = 1; // Confirmation message indicating if the item was successfully added to wishlist
+}
+
+// Request message for rating an item
+message RateItemRequest {
+  string item_id = 1; // ID of the item to rate
+  string buyer_address = 2; // Address of the buyer's notification server
+  int32 rating = 3; // Rating given to the item (1-5)
+}
+
+// Response message for rating an item
+message RateItemResponse {
+  string message = 1; // Confirmation message indicating if the rating was successful
+}
+
+// Item details message
+message ItemDetails {
+  string item_id = 1; // ID of the item
+  float price_per_unit = 2; // Price per unit of the item
+  int32 quantity = 3; // Quantity of the item
+  string product_name = 4; // Name of the product
+  string category = 5; // Category of the product
+  string description = 6; // Description of the product
+  string seller = 7; // Address of the seller's notification server
+  float average_rating=8;
+}
+
+// Market service definition
+service Market {
+  rpc RegisterSeller(RegisterSellerRequest) returns (RegisterSellerResponse); // Register seller RPC
+  rpc SellItem(SellItemRequest) returns (SellItemResponse); // Sell item RPC
+  rpc UpdateItem(UpdateItemRequest) returns (UpdateItemResponse); // Update item RPC
+  rpc DeleteItem(DeleteItemRequest) returns (DeleteItemResponse); // Delete item RPC
+  rpc DisplaySellerItems(DisplaySellerItemsRequest) returns (DisplaySellerItemsResponse); // Display seller's items RPC
+  rpc SearchItem(SearchItemRequest) returns (SearchItemResponse); // Search item RPC
+  rpc BuyItem(BuyItemRequest) returns (BuyItemResponse); // Buy item RPC
+  rpc AddToWishList(AddToWishListRequest) returns (AddToWishListResponse); // Add item to wishlist RPC
+  rpc RateItem(RateItemRequest) returns (RateItemResponse); // Rate item RPC
+  rpc NotifyClient(NotifyClientRequest) returns (NotifyClientResponse); // Notify client RPC
+}
